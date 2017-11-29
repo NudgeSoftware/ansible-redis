@@ -30,8 +30,14 @@ rdbchecksum {{ redis_rdbchecksum|string }}
 dbfilename {{ redis_db_filename|string }}
 
 # Replication
-{% if redis_slaveof and redis_slaveof != ansible_eth0.ipv4.address ~ " " ~ redis_port -%}
+{% if redis_slaveof and redis_slaveof != redis_slave_ip|d(ansible_eth0.ipv4.address) ~ " " ~ redis_slave_port|d(redis_port) -%}
 slaveof {{ redis_slaveof }}
+{% endif -%}
+{% if redis_slave_port is defined -%}
+slave-announce-port {{ redis_slave_port }}
+{% endif -%}
+{% if redis_slave_ip is defined -%}
+slave-announce-ip {{ redis_slave_ip }}
 {% endif -%}
 slave-serve-stale-data yes
 slave-read-only {{ redis_slave_read_only }}

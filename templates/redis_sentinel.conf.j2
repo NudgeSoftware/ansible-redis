@@ -6,6 +6,12 @@ dir {{ redis_sentinel_dir }}
 pidfile {{ redis_sentinel_pidfile }}
 port {{ redis_sentinel_port }}
 bind {{ redis_sentinel_bind }}
+{% if redis_sentinel_announce_ip is defined %}
+sentinel announce-ip {{ redis_sentinel_announce_ip }} 
+{% endif %}
+{% if redis_sentinel_announce_port|int|d(0) > 0 %}
+sentinel announce-port {{ redis_sentinel_announce_port }} 
+{% endif %}
 
 {% for master in redis_sentinel_monitors -%}
 sentinel monitor {{ master.name }} {{ master.host }} {{ master.port }} {{ master.quorum|d('2') }}
