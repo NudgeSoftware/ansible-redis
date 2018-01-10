@@ -9,7 +9,7 @@ bind {{ redis_sentinel_bind }}
 {% if redis_sentinel_announce_ip is defined %}
 sentinel announce-ip {{ redis_sentinel_announce_ip }} 
 {% endif %}
-{% if redis_sentinel_announce_port|int|d(0) > 0 %}
+{% if redis_sentinel_announce_port|d(0)|int > 0 %}
 sentinel announce-port {{ redis_sentinel_announce_port }} 
 {% endif %}
 
