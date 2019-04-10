@@ -5,7 +5,7 @@
     update_cache: yes
     cache_valid_time: 86400
     state: present
-  with_items:
+  loop:
     - gcc
     - make
     - libc6-dev
@@ -17,7 +17,7 @@
   yum:
     name: "{{ item }}"
     state: present
-  with_items:
+  loop:
     - gcc
     - make
   when: ansible_os_family == "RedHat"
@@ -35,7 +35,7 @@
   yum:
     name: "{{ item }}"
     state: latest
-  with_items:
+  loop:
     - libgcc.i686
     - glibc-devel.i686
   when: ansible_os_family == "RedHat" and redis_make_32bit|bool
@@ -44,7 +44,7 @@
   zypper:
     name: "{{ item }}"
     state: present
-  with_items:
+  loop:
     - gcc
     - make
     # This should be `else omit`, but it fails on Ansible 1.x, so just duplicate gcc
