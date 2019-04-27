@@ -15,11 +15,10 @@
 
 - name: install redhat dependencies
   yum:
-    name: "{{ item }}"
+    name:
+      - gcc
+      - make
     state: present
-  loop:
-    - gcc
-    - make
   when: ansible_os_family == "RedHat"
 
 # Conditionally install the i686 build of libgcc if we are building 32-bit
@@ -33,11 +32,10 @@
 
 - name: install redhat 32-bit dependencies
   yum:
-    name: "{{ item }}"
+    name:
+      - libgcc.i686
+      - glibc-devel.i686
     state: latest
-  loop:
-    - libgcc.i686
-    - glibc-devel.i686
   when: ansible_os_family == "RedHat" and redis_make_32bit|bool
 
 - name: install suse dependencies
